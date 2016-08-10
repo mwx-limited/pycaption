@@ -22,7 +22,7 @@ setup(
     long_description=open(README_PATH).read(),
     author='Joe Norton',
     author_email='joey@nortoncrew.com',
-    url='https://github.com/pbs/pycaption',
+    url='https://github.com/mwx-limited/pycaption',
     install_requires=dependencies,
     packages=find_packages(),
     include_package_data=True,
