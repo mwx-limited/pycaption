@@ -206,7 +206,7 @@ class WebVTTWriter(BaseWriter):
     video_width = None
     video_height = None
 
-    def write(self, caption_set):
+    def write(self, caption_set, use_styling=True):
         """
         :type caption_set: CaptionSet
         """
@@ -230,7 +230,7 @@ class WebVTTWriter(BaseWriter):
         captions = caption_set.get_captions(lang)
 
         return output + '\n'.join(
-            [self._write_caption(caption_set, caption) for caption in captions])
+            [self._write_caption(caption_set, caption, use_styling) for caption in captions])
 
     def _timestamp(self, ts):
         td = datetime.timedelta(microseconds=ts)
@@ -269,10 +269,11 @@ class WebVTTWriter(BaseWriter):
 
         return resulting_style
 
-    def _write_caption(self, caption_set, caption):
+    def _write_caption(self, caption_set, caption, use_styling=True):
         """
         :type caption: Caption
         """
+
         layout_groups = self._layout_groups(caption.nodes, caption_set)
 
         start = self._timestamp(caption.start)
@@ -294,9 +295,13 @@ class WebVTTWriter(BaseWriter):
         for cue_text, layout in layout_groups:
             if not layout:
                 layout = caption.layout_info or self.global_layout
-            cue_settings = self._cue_settings_from(layout)
+            if use_styling in [True, 'True', 'true', 'yes', 1]:
+                cue_settings = self._cue_settings_from(layout)
+            else:
+                cue_settings = '';
+
             output += timespan + cue_settings + '\n'
-            output += cue_style_tags[0] + cue_text.decode('utf-8') + cue_style_tags[1] + '\n'
+            output += cue_style_tags[0] + cue_text + cue_style_tags[1] + '\n'
 
         return output
 

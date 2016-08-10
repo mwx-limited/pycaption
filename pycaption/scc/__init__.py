@@ -204,7 +204,7 @@ class SCCReader(BaseReader):
             the resulting captions will contain all the rows that were visible
             on the screen when the captions were rolling up.
 
-        :type offset: int
+        :type offset: float
         :param offset:
 
         :rtype: CaptionSet
@@ -335,7 +335,7 @@ class SCCReader(BaseReader):
         if self._handle_double_command(word):
             return
 
-        self.buffer.add_chars(SPECIAL_CHARS[word])
+        self.buffer.add_chars(SPECIAL_CHARS[word].decode('utf-8'))
 
     def _translate_extended_char(self, word):
         # XXX - this looks highly buggy. Why would a special char be ignored
@@ -625,7 +625,7 @@ class _SccTimeTranslator(object):
     def _translate_time(stamp, offset):
         """
         :param stamp:
-        :type offset: int
+        :type offset: float
         :param offset: Subtract this many microseconds from the calculated time
             Helpful for when the captions are off by some time interval.
         :rtype: int
