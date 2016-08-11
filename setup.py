@@ -16,13 +16,13 @@ dependencies = [
 ]
 
 setup(
-    name='pycaption',
+    name='pycaption-mwx',
     version='1.0.0',
     description='Closed caption converter',
     long_description=open(README_PATH).read(),
-    author='Joe Norton',
-    author_email='joey@nortoncrew.com',
-    url='https://github.com/mwx-limited/pycaption',
+    author='MWX Limited',
+    author_email='mwxltd@gmail.com',
+    url='https://github.com/mwx-limited/pycaption-mwx',
     install_requires=dependencies,
     packages=find_packages(),
     include_package_data=True,
