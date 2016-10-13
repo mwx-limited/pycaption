@@ -626,7 +626,7 @@ class _SccTimeTranslator(object):
         """
         :param stamp:
         :type offset: float
-        :param offset: Subtract this many microseconds from the calculated time
+        :param offset: add this many microseconds to the calculated time
             Helpful for when the captions are off by some time interval.
         :rtype: int
         """
@@ -646,7 +646,7 @@ class _SccTimeTranslator(object):
                              int(time_split[3]) / 30.0)
 
         seconds = timestamp_seconds * seconds_per_timestamp_second
-        microseconds = seconds * 1000 * 1000 - offset
+        microseconds = seconds * 1000 * 1000 + offset
 
         if microseconds < 0:
             microseconds = 0
