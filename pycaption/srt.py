@@ -14,7 +14,12 @@ class SRTReader(BaseReader):
         else:
             return False
 
-    def read(self, content, lang='en-US'):
+    def read(self, content, lang='en-US', offset=0):
+        """
+        :type offset: float
+        :param offset: add this many microseconds to the calculated time
+            Helpful for when the captions are off by some time interval.
+        """
         if type(content) != six.text_type:
             raise InvalidInputError('The content is not a unicode string.')
 
@@ -29,8 +34,8 @@ class SRTReader(BaseReader):
             end_line = self._find_text_line(start_line, lines)
 
             timing = lines[start_line + 1].split('-->')
-            start = self._srttomicro(timing[0].strip(' \r\n'))
-            end = self._srttomicro(timing[1].strip(' \r\n'))
+            start = self._srttomicro(timing[0].strip(' \r\n'), offset)
+            end = self._srttomicro(timing[1].strip(' \r\n'), offset)
 
             nodes = []
 
@@ -55,7 +60,7 @@ class SRTReader(BaseReader):
 
         return caption_set
 
-    def _srttomicro(self, stamp):
+    def _srttomicro(self, stamp, offset=0):
         timesplit = stamp.split(':')
         if ',' not in timesplit[2]:
             timesplit[2] += ',000'
@@ -63,7 +68,8 @@ class SRTReader(BaseReader):
         microseconds = (int(timesplit[0]) * 3600000000 +
                         int(timesplit[1]) * 60000000 +
                         int(secsplit[0]) * 1000000 +
-                        int(secsplit[1]) * 1000)
+                        int(secsplit[1]) * 1000 +
+                        offset * 1000000)
 
         return microseconds
 
